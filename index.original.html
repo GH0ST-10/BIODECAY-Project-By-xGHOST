@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0d0b08" />
+  <title>BIODECAY — A Project By xGHOST | Zombie Apocalypse Survival Modpack</title>
+  <meta name="description" content="BIODECAY is an upcoming immersive zombie apocalypse survival modpack for Minecraft 1.20.1 (Forge). A project by xGHOST." />
+  <link rel="icon" type="image/png" href="./img/gas-mask.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <script>document.documentElement.classList.add("js");</script>
+
+  <style>
+    :root {
+      --bg: #0d0b08;
+      --panel: #17130d;
+      --line: #33291b;
+      --text: #ece5d3;
+      --muted: #a89f8a;
+      --gold: #f6b21a;
+      --toxic: #a8d43a;
+      --rust: #8a3319;
+      --pixel: "Press Start 2P", "Geist Mono", monospace;
+      --body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; color-scheme: dark; scrollbar-width: thin; scrollbar-color: #33291b #0d0b08; }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #0d0b08; }
+    ::-webkit-scrollbar-thumb { background: #33291b; border: 2px solid #0d0b08; }
+    ::-webkit-scrollbar-thumb:hover { background: #5a4a2f; }
+    ::-webkit-scrollbar-corner { background: #0d0b08; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    :focus-visible { outline: 3px solid var(--toxic); outline-offset: 3px; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .skip {
+      position: absolute; left: 12px; top: -60px; z-index: 100;
+      background: var(--gold); color: #000; padding: 10px 14px;
+      font-family: var(--pixel); font-size: 10px; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .pixelated { image-rendering: pixelated; }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(13, 11, 8, 0.92);
+      border-bottom: 2px solid var(--line);
+      backdrop-filter: blur(6px);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand img { width: 36px; height: 36px; object-fit: contain; }
+    .brand span { font-family: var(--pixel); font-size: 13px; color: var(--gold); letter-spacing: 1px; }
+    .nav ul { display: none; list-style: none; margin: 0; padding: 0; gap: 28px; }
+    .nav ul a {
+      font-family: var(--pixel); font-size: 10px; text-decoration: none;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .nav ul a:hover { color: var(--text); }
+    @media (min-width: 820px) { .nav ul { display: flex; } }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: var(--pixel); font-size: 12px; line-height: 1.4; text-transform: uppercase;
+      text-decoration: none; text-align: center; cursor: pointer;
+      padding: 16px 22px; border: 3px solid #000;
+      box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.28), inset 4px 4px 0 rgba(255, 255, 255, 0.28), 5px 5px 0 #000;
+      transition: transform 80ms steps(2), box-shadow 80ms steps(2);
+    }
+    .btn:hover { transform: translate(2px, 2px); box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.28), inset 4px 4px 0 rgba(255, 255, 255, 0.28), 3px 3px 0 #000; }
+    .btn:active { transform: translate(5px, 5px); box-shadow: inset 4px 4px 0 rgba(0, 0, 0, 0.3), 0 0 0 #000; }
+    .btn svg { width: 18px; height: 18px; flex: none; }
+    .btn-gold { background: var(--gold); color: #1a1104; }
+    .btn-ghost { background: #2a2318; color: var(--text); }
+    .btn-sm { padding: 10px 14px; font-size: 10px; box-shadow: inset -3px -3px 0 rgba(0, 0, 0, 0.28), inset 3px 3px 0 rgba(255, 255, 255, 0.28), 3px 3px 0 #000; }
+    .btn-lg { padding: 20px 28px; font-size: 14px; }
+    .btn[aria-disabled="true"] {
+      background: #3a3226; color: #b3a98f; cursor: not-allowed;
+      box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.3), inset 4px 4px 0 rgba(255, 255, 255, 0.08), 5px 5px 0 #000;
+      transform: none;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; isolation: isolate;
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center;
+      padding: 72px 0 96px;
+      background: #0d0b08 url("./img/hero-bg.png") center bottom / cover no-repeat;
+      image-rendering: pixelated;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(13, 11, 8, 0.86) 0%, rgba(13, 11, 8, 0.45) 45%, rgba(13, 11, 8, 0.96) 100%);
+    }
+    .hero .wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+    .status {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--pixel); font-size: 10px; text-transform: uppercase;
+      color: var(--toxic); background: rgba(13, 11, 8, 0.85);
+      border: 2px solid var(--toxic); padding: 10px 14px;
+    }
+    .status i { width: 8px; height: 8px; background: var(--toxic); animation: blink 1.2s steps(2) infinite; }
+    @keyframes blink { 50% { opacity: 0.15; } }
+    .hero h1 { width: 100%; display: flex; justify-content: center; }
+    .hero-logo { width: min(100%, 860px); filter: drop-shadow(0 10px 0 rgba(0, 0, 0, 0.55)); animation: float 5s ease-in-out infinite alternate; }
+    @keyframes float { to { transform: translateY(-6px); } }
+
+    .hero .wrap > * { animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .hero .wrap > :nth-child(2) { animation-delay: 120ms; }
+    .hero .wrap > :nth-child(3) { animation-delay: 260ms; }
+    .hero .wrap > :nth-child(4) { animation-delay: 380ms; }
+    .hero .wrap > :nth-child(5) { animation-delay: 500ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+
+    .ash { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .ash span {
+      position: absolute; top: 100%; display: block;
+      width: var(--s, 3px); height: var(--s, 3px); background: var(--c, var(--gold)); opacity: 0;
+      animation: drift var(--t, 14s) linear var(--delay, 0s) infinite;
+    }
+    @keyframes drift {
+      10% { opacity: var(--o, 0.4); }
+      80% { opacity: var(--o, 0.4); }
+      100% { opacity: 0; transform: translate(var(--dx, 30px), -85vh); }
+    }
+
+    main .reveal { opacity: 0; transform: translateY(22px); transition: opacity 650ms ease var(--d, 0ms), transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms); }
+    main .reveal.in { opacity: 1; transform: none; }
+    .hero p.lede { max-width: 620px; font-size: 20px; color: var(--text); text-wrap: balance; }
+    .hero p.lede strong { color: var(--gold); font-weight: 600; }
+    .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+
+    /* ---------- Hazard tape ---------- */
+    .tape {
+      height: 22px; border-block: 3px solid #000;
+      background: repeating-linear-gradient(-45deg, var(--gold) 0 22px, #14100a 22px 44px);
+      animation: tape 7s linear infinite;
+    }
+    @keyframes tape { to { background-position: 62.225px 0; } }
+
+    /* ---------- Sections ---------- */
+    section { padding: 96px 0; }
+    .eyebrow { font-family: var(--pixel); font-size: 10px; color: var(--toxic); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; }
+    h2 { font-family: var(--pixel); font-size: clamp(20px, 3.4vw, 30px); line-height: 1.5; color: var(--gold); text-wrap: balance; text-shadow: 3px 3px 0 #000; }
+    .section-head { max-width: 700px; margin-bottom: 48px; }
+    .section-head p:not(.eyebrow) { margin-top: 20px; color: var(--muted); }
+
+    /* About */
+    .about { display: grid; gap: 48px; align-items: center; }
+    .about .copy p.body { color: var(--muted); margin-top: 18px; }
+    .about .copy p.body.lead { color: var(--text); font-size: 19px; margin-top: 28px; }
+    @media (min-width: 880px) { .about { grid-template-columns: 1.15fr 0.85fr; } }
+
+    .specs { margin: 0; background: var(--panel); border: 3px solid #000; box-shadow: 6px 6px 0 #000, inset 0 0 0 2px var(--line); }
+    .specs > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 16px 20px; border-bottom: 2px solid var(--line); }
+    .specs > div:last-child { border-bottom: 0; }
+    .specs dt { font-family: var(--pixel); font-size: 9px; color: var(--muted); text-transform: uppercase; }
+    .specs dd { margin: 0; text-align: right; font-weight: 600; }
+    .specs dd.tox { color: var(--toxic); }
+
+    /* Features */
+    .alt { background: #120f0a; border-block: 2px solid var(--line); }
+    .grid { display: grid; gap: 20px; }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      background: var(--panel); border: 3px solid #000; padding: 26px 24px 28px;
+      box-shadow: 6px 6px 0 #000, inset 0 0 0 2px var(--line);
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .card .top { display: flex; align-items: center; justify-content: space-between; }
+    .card .ico { width: 46px; height: 46px; display: grid; place-items: center; background: #241d12; border: 2px solid var(--gold); color: var(--gold); }
+    .card .ico svg { width: 22px; height: 22px; }
+    .card .num { font-family: var(--pixel); font-size: 10px; color: #6b624f; }
+    .card h3 { font-family: var(--pixel); font-size: 12px; line-height: 1.6; color: var(--text); text-transform: uppercase; }
+    .card p { color: var(--muted); font-size: 16px; }
+    .card { transition: box-shadow 160ms ease; }
+    .card .ico { transition: background-color 160ms ease, color 160ms ease; }
+    .card:hover { box-shadow: 6px 6px 0 #000, inset 0 0 0 2px var(--gold); }
+    .card:hover .ico { background: var(--gold); color: #1a1104; }
+
+    /* Install */
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; counter-reset: step; }
+    @media (min-width: 880px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+    .steps li { counter-increment: step; border-left: 4px solid var(--rust); padding: 4px 0 4px 22px; }
+    .steps li::before { content: "STEP 0" counter(step); display: block; font-family: var(--pixel); font-size: 10px; color: var(--gold); margin-bottom: 14px; }
+    .steps h3 { font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+    .steps p { color: var(--muted); font-size: 16px; }
+
+    /* Download */
+    .dl {
+      display: grid; gap: 36px; align-items: center;
+      background: var(--panel); border: 3px solid #000; padding: 40px 28px;
+      box-shadow: 8px 8px 0 #000, inset 0 0 0 2px var(--gold);
+    }
+    @media (min-width: 820px) { .dl { grid-template-columns: 260px 1fr; padding: 52px 48px; gap: 52px; } }
+    .dl .mask { width: 200px; margin: 0 auto; animation: bob 3.2s steps(6) infinite alternate; }
+    @media (min-width: 820px) { .dl .mask { width: 100%; } }
+    @keyframes bob { to { transform: translateY(-10px); } }
+    .dl p.sub { margin: 18px 0 28px; color: var(--muted); max-width: 520px; }
+    .dl .meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 24px; font-family: var(--pixel); font-size: 9px; color: var(--muted); text-transform: uppercase; }
+    .dl .meta span b { color: var(--toxic); font-weight: 400; }
+    .dl .meta:empty { display: none; }
+
+    /* Community */
+    .social-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; list-style: none; margin: 0; padding: 0; }
+    .social-link {
+      display: inline-flex; align-items: center; gap: 10px; padding: 6px 2px;
+      font-family: var(--pixel); font-size: 10px; text-transform: uppercase; text-decoration: none;
+      color: var(--muted);
+    }
+    .social-link:hover { color: var(--gold); }
+    .social-link svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+
+    .channels { display: grid; gap: 20px; }
+    @media (min-width: 760px) { .channels { grid-template-columns: repeat(2, 1fr); } }
+    .channel {
+      display: flex; gap: 20px; align-items: flex-start; text-decoration: none;
+      background: var(--panel); border: 3px solid #000; padding: 28px 24px;
+      box-shadow: 6px 6px 0 #000, inset 0 0 0 2px var(--line);
+      transition: transform 80ms steps(2), box-shadow 80ms steps(2);
+    }
+    .channel:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0 #000, inset 0 0 0 2px var(--gold); }
+    .channel .ico { width: 56px; height: 56px; flex: none; display: grid; place-items: center; background: #241d12; border: 2px solid var(--gold); color: var(--gold); }
+    .channel .ico svg { width: 28px; height: 28px; fill: currentColor; }
+    .channel .info { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .channel h3 { font-family: var(--pixel); font-size: 13px; line-height: 1.5; text-transform: uppercase; color: var(--text); }
+    .channel .handle { font-family: var(--pixel); font-size: 9px; line-height: 1.6; color: var(--toxic); overflow-wrap: anywhere; }
+    .channel p.desc { color: var(--muted); font-size: 16px; }
+    .channel .go { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-family: var(--pixel); font-size: 10px; text-transform: uppercase; color: var(--gold); }
+    .channel .go svg { width: 16px; height: 16px; }
+
+    /* Loader */
+    #loader { display: none; }
+    .js #loader {
+      position: fixed; inset: 0; z-index: 200; padding: 24px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+      background: var(--bg); text-align: center;
+      transition: opacity 450ms ease, visibility 0s linear 450ms;
+    }
+    .js #loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    .js #loader[hidden] { display: none; }
+    .js:not(.loaded) .hero .wrap > * { animation-play-state: paused; }
+
+    .loader-text { font-family: var(--pixel); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .loader-text i { display: inline-block; width: 4px; height: 4px; margin-left: 6px; background: currentColor; animation: dot 1.2s steps(1) infinite; }
+    .loader-text i:nth-child(2) { animation-delay: 200ms; }
+    .loader-text i:nth-child(3) { animation-delay: 400ms; }
+    @keyframes dot { 0%, 60%, 100% { opacity: 0.15; } 20%, 40% { opacity: 1; } }
+    .loader-sub { color: var(--muted); font-size: 14px; }
+
+    .stage { width: 280px; height: 320px; display: grid; place-items: center; }
+    .zombie {
+      --u: 7px;
+      --skin: #5a9148; --skin-d: #44703a; --skin-l: #6dab58;
+      --shirt: #1fa3a3; --shirt-d: #187f80; --shirt-l: #2dbcbc;
+      --pants: #4a43a8; --pants-d: #39338a; --shoe: #5b5b63; --shoe-d: #45454c;
+      position: relative; width: calc(8 * var(--u)); height: calc(32 * var(--u));
+      transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(35deg);
+    }
+    .cube {
+      position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u));
+      width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
+      transform-style: preserve-3d;
+    }
+    .face { position: absolute; display: block; backface-visibility: hidden; }
+    .face.front, .face.back { inset: 0; }
+    .face.left, .face.right { top: 0; height: 100%; width: calc(var(--d) * var(--u)); left: calc((var(--w) - var(--d)) * var(--u) / 2); }
+    .face.top, .face.bottom { left: 0; width: 100%; height: calc(var(--d) * var(--u)); top: calc((var(--h) - var(--d)) * var(--u) / 2); }
+    .face.front { transform: translateZ(calc(var(--d) * var(--u) / 2)); }
+    .face.back { transform: rotateY(180deg) translateZ(calc(var(--d) * var(--u) / 2)); }
+    .face.right { transform: rotateY(90deg) translateZ(calc(var(--w) * var(--u) / 2)); }
+    .face.left { transform: rotateY(-90deg) translateZ(calc(var(--w) * var(--u) / 2)); }
+    .face.top { transform: rotateX(90deg) translateZ(calc(var(--h) * var(--u) / 2)); }
+    .face.bottom { transform: rotateX(-90deg) translateZ(calc(var(--h) * var(--u) / 2)); }
+    .px {
+      position: absolute; display: block; background: var(--c);
+      left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u));
+      width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
+    }
+
+    .z-head .face { background: var(--skin-d); }
+    .z-head .front { background: var(--skin); }
+    .z-head .top { background: var(--skin-l); }
+    .z-body .face { background: var(--shirt-d); }
+    .z-body .front { background: var(--shirt); }
+    .z-body .top { background: var(--shirt-l); }
+    .z-arm .front { background: linear-gradient(var(--shirt) 0 34%, var(--skin) 34%); }
+    .z-arm .back { background: linear-gradient(var(--shirt-l) 0 34%, var(--skin-l) 34%); }
+    .z-arm .left, .z-arm .right { background: linear-gradient(var(--shirt-d) 0 34%, var(--skin-d) 34%); }
+    .z-arm .top { background: var(--shirt-d); }
+    .z-arm .bottom { background: var(--skin); }
+    .z-leg .front, .z-leg .back { background: linear-gradient(var(--pants) 0 75%, var(--shoe) 75%); }
+    .z-leg .left, .z-leg .right { background: linear-gradient(var(--pants-d) 0 75%, var(--shoe-d) 75%); }
+    .z-leg .top { background: var(--pants); }
+    .z-leg .bottom { background: var(--shoe-d); }
+
+    .z-head { animation: z-head 2.1s ease-in-out infinite alternate; }
+    .z-arm { transform-origin: 50% calc(2 * var(--u)); transform: rotateX(88deg); animation: z-arm 1040ms ease-in-out infinite alternate; }
+    .z-leg { transform-origin: 50% 0; animation: z-leg 520ms ease-in-out infinite alternate; }
+    .z-arm.alt, .z-leg.alt { animation-direction: alternate-reverse; }
+    @keyframes z-head { from { transform: rotateY(-7deg) rotateZ(-2deg); } to { transform: rotateY(7deg) rotateZ(2deg); } }
+    @keyframes z-arm { from { transform: rotateX(82deg); } to { transform: rotateX(94deg); } }
+    @keyframes z-leg { from { transform: rotateX(36deg); } to { transform: rotateX(-36deg); } }
+
+    .ground {
+      position: absolute; left: calc(-6 * var(--u)); top: calc(8 * var(--u));
+      width: calc(20 * var(--u)); height: calc(48 * var(--u));
+      transform: rotateX(90deg);
+      background: repeating-linear-gradient(to bottom, #2a2114 0 calc(4 * var(--u)), #17120b calc(4 * var(--u)) calc(8 * var(--u)));
+      background-size: 100% calc(8 * var(--u));
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent);
+      animation: z-ground 300ms linear infinite;
+    }
+    @keyframes z-ground { to { background-position: 0 calc(-8 * var(--u)); } }
+
+    /* Toast */
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; z-index: 80;
+      transform: translate(-50%, calc(100% + 48px)); visibility: hidden;
+      background: #0d0b08; color: var(--text); border: 3px solid var(--toxic);
+      box-shadow: 5px 5px 0 #000; padding: 14px 18px; max-width: calc(100vw - 32px);
+      font-size: 15px; transition: transform 200ms steps(4), visibility 0s 200ms;
+    }
+    .toast.show { transform: translate(-50%, 0); visibility: visible; transition: transform 200ms steps(4); }
+    .toast a { color: var(--gold); }
+
+    /* Footer */
+    footer { border-top: 2px solid var(--line); padding: 44px 0 56px; }
+    footer .wrap { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+    footer .brand span { font-size: 11px; }
+    footer p { color: var(--muted); font-size: 14px; max-width: 640px; }
+
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      section { padding: 72px 0; }
+      .hero p.lede { font-size: 18px; }
+      .btn-lg { font-size: 12px; padding: 18px 20px; width: 100%; }
+      .cta .btn { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div id="loader" role="status">
+    <div class="stage" aria-hidden="true"><div class="zombie" id="zombie"></div></div>
+    <p class="loader-text">Loading<i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i></p>
+    <p class="loader-sub">Entering the quarantine zone</p>
+  </div>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var loader = document.getElementById("loader");
+      var zombie = document.getElementById("zombie");
+      var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var started = performance.now();
+      var MIN_VISIBLE_MS = 1800;
+
+      function cube(cls, w, h, d, x, y) {
+        var el = document.createElement("div");
+        el.className = "cube " + cls;
+        el.style.cssText = "--w:" + w + ";--h:" + h + ";--d:" + d + ";--x:" + x + ";--y:" + y;
+        ["front", "back", "left", "right", "top", "bottom"].forEach(function (name) {
+          var face = document.createElement("i");
+          face.className = "face " + name;
+          el.appendChild(face);
+        });
+        zombie.appendChild(el);
+        return el;
+      }
+      function px(x, y, w, h, color) {
+        return '<b class="px" style="--x:' + x + ";--y:" + y + ";--w:" + w + ";--h:" + h + ";--c:" + color + '"></b>';
+      }
+
+      var ground = document.createElement("div");
+      ground.className = "ground";
+      zombie.appendChild(ground);
+
+      cube("z-leg", 4, 12, 4, 0, 20);
+      cube("z-leg alt", 4, 12, 4, 4, 20);
+      cube("z-body", 8, 12, 4, 0, 8).querySelector(".front").innerHTML =
+        px(0, 0, 2, 1, "var(--shirt-l)") + px(5, 3, 2, 2, "var(--shirt-d)") + px(1, 7, 2, 1, "var(--shirt-d)") + px(0, 11, 8, 1, "var(--shirt-d)");
+      cube("z-arm", 4, 12, 4, -4, 8);
+      cube("z-arm alt", 4, 12, 4, 8, 8);
+
+      var head = cube("z-head", 8, 8, 8, 0, 0);
+      head.querySelector(".front").innerHTML =
+        px(0, 0, 3, 1, "var(--skin-d)") + px(5, 0, 3, 2, "var(--skin-d)") + px(0, 1, 1, 2, "var(--skin-d)") +
+        px(1, 4, 2, 1, "#0b0b0b") + px(5, 4, 2, 1, "#0b0b0b") +
+        px(3, 5, 2, 1, "#365a2e") + px(2, 7, 4, 1, "#365a2e");
+      head.querySelector(".left").innerHTML =
+        px(0, 0, 4, 1, "#365a2e") + px(5, 2, 2, 2, "#365a2e") + px(1, 5, 2, 1, "#365a2e");
+      head.querySelector(".top").innerHTML =
+        px(1, 1, 3, 2, "var(--skin)") + px(5, 4, 2, 3, "var(--skin)");
+
+      var finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        var wait = calm ? 0 : Math.max(0, MIN_VISIBLE_MS - (performance.now() - started));
+        setTimeout(function () {
+          root.classList.add("loaded");
+          loader.classList.add("hide");
+          setTimeout(function () { loader.hidden = true; }, 500);
+        }, wait);
+      }
+      if (document.readyState === "complete") finish();
+      else window.addEventListener("load", finish);
+      setTimeout(finish, 8000);
+    })();
+  </script>
+
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-youtube" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol>
+    <symbol id="i-discord" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol>
+  </svg>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="BIODECAY home">
+        <img class="pixelated" src="./img/gas-mask.png" alt="" width="36" height="36" />
+        <span>BIODECAY</span>
+      </a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#community">Community</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-gold btn-sm" href="#download" data-download>
+        <i data-lucide="download" aria-hidden="true"></i><span data-download-label>Download</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <div class="hero" id="top">
+      <div class="ash" id="ash" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="status"><i aria-hidden="true"></i>Outbreak incoming &middot; In development</p>
+        <h1>
+          <span class="sr-only">BIODECAY: A Project By xGHOST</span>
+          <img class="hero-logo pixelated" src="./img/biodecay-title.png" width="1024" height="367"
+               alt="BIODECAY logo: golden block letters with a dripping pixel-art gas mask in front of a ruined city skyline, subtitled A Project By xGHOST" />
+        </h1>
+        <p class="lede">An immersive <strong>zombie apocalypse survival</strong> modpack for Minecraft 1.20.1 on Forge. The world has rotted. See how long you last.</p>
+        <div class="cta">
+          <a class="btn btn-gold btn-lg" href="#download" data-download>
+            <i data-lucide="download" aria-hidden="true"></i><span data-download-label>Download</span>
+          </a>
+          <a class="btn btn-ghost btn-lg" href="#features">See what's inside</a>
+        </div>
+        <ul class="social-row" aria-label="Follow BIODECAY">
+          <li><a class="social-link" href="https://www.youtube.com/@BiodecayMinecraft" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-youtube" /></svg>YouTube</a></li>
+          <li><a class="social-link" href="https://discord.gg/D4EEFV3Fmw" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-discord" /></svg>Discord</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tape" role="presentation"></div>
+
+    <!-- About -->
+    <section id="about">
+      <div class="wrap about">
+        <div class="copy">
+          <p class="eyebrow">// The outbreak</p>
+          <h2>Civilization is gone. The air isn't safe either.</h2>
+          <p class="body lead">BIODECAY drops you into a world that ended without you. Cities are hollow, the dead walk the streets, and every breath outside is a gamble.</p>
+          <p class="body">Built from the ground up by xGHOST as one cohesive experience, not a pile of mods. Scavenge what's left, fortify what you can, and survive long enough to learn what happened.</p>
+        </div>
+
+        <dl class="specs" aria-label="Pack details">
+          <div><dt>Genre</dt><dd>Zombie apocalypse survival</dd></div>
+          <div><dt>Status</dt><dd class="tox">In development</dd></div>
+          <div><dt>Game version</dt><dd>Minecraft 1.20.1</dd></div>
+          <div><dt>Mod loader</dt><dd>Forge</dd></div>
+          <div><dt>Release</dt><dd>Coming soon</dd></div>
+          <div><dt>Creator</dt><dd>xGHOST</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">// Field manual</p>
+          <h2>Everything out here wants you dead.</h2>
+          <p>Six things to know before you step outside.</p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="skull" aria-hidden="true"></i></span><span class="num">01</span></div>
+            <h3>The infected</h3>
+            <p>The dead don't rest. They roam the ruins in numbers, and the nights belong to them.</p>
+          </article>
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="backpack" aria-hidden="true"></i></span><span class="num">02</span></div>
+            <h3>Scavenge the ruins</h3>
+            <p>Pick through abandoned buildings for food, tools and supplies. Every run is a risk worth weighing.</p>
+          </article>
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="brick-wall" aria-hidden="true"></i></span><span class="num">03</span></div>
+            <h3>Fortify and hold</h3>
+            <p>Turn a wreck into a safehouse. Reinforce it, stock it, and make it a place worth coming back to.</p>
+          </article>
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="biohazard" aria-hidden="true"></i></span><span class="num">04</span></div>
+            <h3>A hostile world</h3>
+            <p>Zombies aren't the only threat. Contamination, hunger and injury will finish what they start.</p>
+          </article>
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="crosshair" aria-hidden="true"></i></span><span class="num">05</span></div>
+            <h3>Arm yourself</h3>
+            <p>Find it, fix it, or build it. What you carry decides whether you fight or run.</p>
+          </article>
+          <article class="card">
+            <div class="top"><span class="ico"><i data-lucide="cloud-fog" aria-hidden="true"></i></span><span class="num">06</span></div>
+            <h3>Total immersion</h3>
+            <p>Sound, lighting and atmosphere tuned so the world feels as dead and dangerous as it looks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section id="install">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">// Deployment</p>
+          <h2>Three steps to the wasteland.</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Download the pack</h3>
+            <p>Hit the download button below. The file starts downloading straight away.</p>
+          </li>
+          <li>
+            <h3>Import it into your launcher</h3>
+            <p>Open your Minecraft launcher of choice and import the downloaded pack file as a new instance.</p>
+          </li>
+          <li>
+            <h3>Launch and survive</h3>
+            <p>Start the instance, create a world, and try to make it through your first night.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="tape" role="presentation"></div>
+
+    <!-- Download -->
+    <section id="download" class="alt" style="border-top: 0;">
+      <div class="wrap">
+        <div class="dl">
+          <img class="mask pixelated" src="./img/gas-mask.png" width="500" height="520"
+               alt="Pixel-art gas mask dripping toxic green slime" />
+          <div>
+            <p class="eyebrow">// Supply drop</p>
+            <h2>Get BIODECAY</h2>
+            <p class="sub" data-download-sub>The pack is still in development. The download goes live here the moment it's released. Join the Discord to hear about it first.</p>
+            <a class="btn btn-gold btn-lg" id="download-main" href="#download" data-download>
+              <i data-lucide="download" aria-hidden="true"></i><span data-download-label>Download</span>
+            </a>
+            <p class="meta" data-download-meta></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community -->
+    <section id="community">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">// Survivor network</p>
+          <h2>Don't survive alone.</h2>
+          <p>Follow development, catch the release the moment it drops, and find other survivors.</p>
+        </div>
+
+        <div class="channels">
+          <a class="channel" href="https://www.youtube.com/@BiodecayMinecraft" target="_blank" rel="noopener noreferrer">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-youtube" /></svg></span>
+            <div class="info">
+              <h3>YouTube</h3>
+              <span class="handle">@BiodecayMinecraft</span>
+              <p class="desc">Trailers, showcases and development updates straight from xGHOST.</p>
+              <span class="go">Watch the channel <i data-lucide="arrow-up-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+          <a class="channel" href="https://discord.gg/D4EEFV3Fmw" target="_blank" rel="noopener noreferrer">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-discord" /></svg></span>
+            <div class="info">
+              <h3>Discord</h3>
+              <span class="handle">discord.gg/D4EEFV3Fmw</span>
+              <p class="desc">Join the server for announcements, support and to talk with the community.</p>
+              <span class="go">Join the server <i data-lucide="arrow-up-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <img class="pixelated" src="./img/gas-mask.png" alt="" width="36" height="36" />
+        <span>BIODECAY &middot; A Project By xGHOST</span>
+      </a>
+      <ul class="social-row" aria-label="BIODECAY on social media" style="justify-content: flex-start;">
+        <li><a class="social-link" href="https://www.youtube.com/@BiodecayMinecraft" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-youtube" /></svg>YouTube</a></li>
+        <li><a class="social-link" href="https://discord.gg/D4EEFV3Fmw" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-discord" /></svg>Discord</a></li>
+      </ul>
+      <p>BIODECAY is a fan-made modpack. Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    /* =====================================================================
+       DOWNLOAD SETTINGS — the only thing to edit when the pack is released.
+
+       url      Direct Internet Archive file link, in this format:
+                https://archive.org/download/<item-id>/<file-name>.zip
+                (must be the /download/ link to the file itself,
+                 NOT the /details/ page)
+       version  Optional, e.g. "v1.0.0"
+       size     Optional, e.g. "1.2 GB"
+       ===================================================================== */
+    const DOWNLOAD = {
+      url: "",
+      version: "",
+      size: ""
+    };
+
+    (function () {
+      if (window.lucide) lucide.createIcons();
+
+      const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!calm) {
+        const ash = document.getElementById("ash");
+        for (let i = 0; i < 22; i++) {
+          const s = document.createElement("span");
+          const t = 10 + Math.random() * 12;
+          s.style.left = (Math.random() * 100).toFixed(1) + "%";
+          s.style.setProperty("--s", (Math.random() < 0.3 ? 4 : 2) + "px");
+          s.style.setProperty("--c", Math.random() < 0.35 ? "var(--toxic)" : "var(--gold)");
+          s.style.setProperty("--o", (0.2 + Math.random() * 0.3).toFixed(2));
+          s.style.setProperty("--dx", Math.round(Math.random() * 120 - 60) + "px");
+          s.style.setProperty("--t", t.toFixed(1) + "s");
+          s.style.setProperty("--delay", (-Math.random() * t).toFixed(1) + "s");
+          ash.appendChild(s);
+        }
+      }
+
+      if (!calm && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            io.unobserve(el);
+            el.classList.add("in");
+            setTimeout(() => {
+              el.classList.remove("reveal", "in");
+              el.style.removeProperty("--d");
+            }, 1200);
+          });
+        }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+
+        document.querySelectorAll(".section-head, .about .copy, .specs, .card, .steps li, .dl, .channel").forEach((el) => {
+          const stagger = el.matches(".card, .steps li, .channel");
+          const index = stagger ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+          el.style.setProperty("--d", (index % 3) * 90 + "ms");
+          el.classList.add("reveal");
+          io.observe(el);
+        });
+      }
+
+      const ready = /^https?:\/\//i.test(DOWNLOAD.url.trim());
+      const buttons = document.querySelectorAll("[data-download]");
+      const main = document.getElementById("download-main");
+      const toast = document.getElementById("toast");
+      let toastTimer;
+
+      function showToast(html) {
+        toast.innerHTML = html;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 6000);
+      }
+
+      if (!ready) {
+        main.removeAttribute("href");
+        main.setAttribute("role", "link");
+        main.setAttribute("aria-disabled", "true");
+        main.querySelector("[data-download-label]").textContent = "Download coming soon";
+        return;
+      }
+
+      const url = DOWNLOAD.url.trim();
+      const fileName = decodeURIComponent(url.split("?")[0].split("/").pop() || "BIODECAY.zip");
+
+      buttons.forEach((a) => {
+        a.href = url;
+        a.setAttribute("download", fileName);
+        a.addEventListener("click", () => {
+          showToast('Your download has started. Nothing happening? <a href="' + url + '" download>Try again</a>.');
+        });
+      });
+
+      main.querySelector("[data-download-label]").textContent = "Download BIODECAY";
+      document.querySelector("[data-download-sub]").textContent =
+        "One click, one file. The download starts instantly, with no redirects or waiting pages.";
+
+      const meta = document.querySelector("[data-download-meta]");
+      [["Version", DOWNLOAD.version], ["Size", DOWNLOAD.size]].forEach(([label, value]) => {
+        if (!value) return;
+        const span = document.createElement("span");
+        span.append(label + ": ");
+        const b = document.createElement("b");
+        b.textContent = value;
+        span.append(b);
+        meta.prepend(span);
+      });
+    })();
+  </script>
+</body>
+</html>
