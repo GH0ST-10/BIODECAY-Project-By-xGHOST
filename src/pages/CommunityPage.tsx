@@ -11,11 +11,11 @@ export const CommunityPage: React.FC = () => {
     '@type': 'CommunityPage',
     name: 'BIODECAY Survivor Network & Community',
     description: 'Official community hub for BIODECAY: Discord server, YouTube trailers, multiplayer matchmaking, bug reports, and development updates from xGHOST.',
-    url: 'https://biodecay.com/community',
+    url: 'https://biodecay.vercel.app/community',
     publisher: {
       '@type': 'Organization',
       name: 'BIODECAY Project',
-      url: 'https://biodecay.com',
+      url: 'https://biodecay.vercel.app',
       sameAs: [
         'https://www.youtube.com/@BiodecayMinecraft',
         'https://discord.gg/D4EEFV3Fmw'

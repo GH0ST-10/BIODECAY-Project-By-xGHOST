@@ -13,7 +13,7 @@ export const AboutPage: React.FC = () => {
         name: 'About BIODECAY Modpack',
         description:
           'Deep dive into the lore, survival philosophy, and technical specifications of BIODECAY, a hardcore zombie survival modpack for Minecraft 1.20.1 Forge created by xGHOST.',
-        url: 'https://biodecay.com/about',
+        url: 'https://biodecay.vercel.app/about',
         mainEntity: {
           '@type': 'VideoGame',
           name: 'BIODECAY',

@@ -55,7 +55,7 @@ export const SEO: React.FC<SEOProps> = ({
       element.setAttribute('href', href);
     };
 
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://biodecay.com';
+    const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://biodecay.vercel.app';
     const fullUrl = `${origin}${canonicalPath}`;
     const fullImageUrl = image.startsWith('http') ? image : `${origin}${image}`;
 
